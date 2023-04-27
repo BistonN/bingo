@@ -55,6 +55,7 @@ const cancelEdit = (valueId) => {
 const saveEdit = (oldValue) => {
     const newNumValue = document.querySelector('#edit').value;
     if (!usedNums.includes(newNumValue)) {
+        usedNums.splice(usedNums.indexOf(oldValue), 1);
         usedNums.push(newNumValue);
         const newElement = document.querySelector(`#i${oldValue}`);
         newElement.innerHTML = saveHTMLEditItem.replaceAll(oldValue, newNumValue);
