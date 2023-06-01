@@ -2,23 +2,22 @@ var saveHTMLEditItem = null;
 const usedNums = []
 
 const sendNum = () => {
-    const newNum = document.querySelector('.send input').value;
-
-    if (!usedNums.includes(newNum)) {
+    var newNum = Number(document.querySelector('.send input').value);
+    if (!usedNums.includes(newNum) && newNum) {
         usedNums.push(newNum);
         var numList = updateNumList();
         numList.innerHTML = `
-            <div class="row num-item" id="i${newNum}">
-                <div class="col">
-                    <span>${newNum}</span>
-                </div>
-                <div class="col">
-                    <button class="btn btn-secondary" onclick="editNum('i${newNum}')">Editar</button>
-                    <button class="btn btn-danger" onclick="deleteNum('i${newNum}')">Apagar</button>
-                </div>
-            </div>` + numList.innerHTML;
+                <div class="row num-item" id="i${newNum}">
+                    <div class="col">
+                        <span>${newNum}</span>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-secondary" onclick="editNum('i${newNum}')">Editar</button>
+                        <button class="btn btn-danger" onclick="deleteNum('i${newNum}')">Apagar</button>
+                    </div>
+                </div>` + numList.innerHTML;
     } else {
-        alert('Numero já adicionado');
+        alert('Numero já adicionado ou valor inválido');
     }
 }
 
@@ -27,6 +26,7 @@ const updateNumList = () => {
 }
 
 const deleteNum = (valueId) => {
+    usedNums.splice(usedNums.indexOf(Number(valueId)));
     document.querySelector(`#${valueId}`).remove();
 }
 
@@ -54,9 +54,8 @@ const cancelEdit = (valueId) => {
 
 const saveEdit = (oldValue) => {
     const newNumValue = document.querySelector('#edit').value;
-    if (!usedNums.includes(newNumValue)) {
-        usedNums.splice(usedNums.indexOf(oldValue), 1);
-        usedNums.push(newNumValue);
+    if (!usedNums.includes(Number(newNumValue))) {
+        usedNums[usedNums.indexOf(Number(oldValue))] = Number(newNumValue);
         const newElement = document.querySelector(`#i${oldValue}`);
         newElement.innerHTML = saveHTMLEditItem.replaceAll(oldValue, newNumValue);
     } else {

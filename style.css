@@ -14,6 +14,7 @@ body {
 
 .settings {
     height: 100%;
+    padding: 5% 10%;
 }
 
 .area {
@@ -44,7 +45,8 @@ body {
 }
 
 .num-list {
-    height: 88%;
+    margin-top: 5%;
+    height: 85%;
 }
 
 .nums {
