@@ -1,8 +1,8 @@
 const { app, BrowserWindow } = require('electron');
 
-require('electron-reload')(__dirname, {
-    electron: require(`${__dirname}/node_modules/electron`)
-});
+// require('electron-reload')(__dirname, {
+//     electron: require(`${__dirname}/node_modules/electron`)
+// });
 
 let mainWindow;
 let sendNumber;
@@ -16,6 +16,7 @@ app.on('ready', () => {
     mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false
@@ -26,6 +27,7 @@ app.on('ready', () => {
     sendNumber = new BrowserWindow({
         width: 800,
         height: 600,
+        autoHideMenuBar: true,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false

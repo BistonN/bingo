@@ -3,14 +3,23 @@
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
+  "build": {
+    "appId": "com.bingo.app"
+  },
+  "postinstall": "electron-builder install-app-deps",
   "scripts": {
     "start": "electron . ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "electron-packager ."
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "electron": "^25.0.1",
+    "electron-packager": "^17.1.1",
+    "packager": "^0.1.9"
+  },
+  "devDependencies": {
     "electron-reload": "^2.0.0-alpha.1"
   }
 }
