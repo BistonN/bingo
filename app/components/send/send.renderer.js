@@ -1,21 +1,15 @@
 const fs = require('fs');
 
-exports.teste = () => {
-    fs.writeFile(`${__dirname}/../../dist/teste.csv`, 'utf8', (err, data) => {
+exports.pushData = () => {
+    var json = JSON.stringify({
+        "data": usedNums
+    });
+    fs.writeFile(`${__dirname}/../../dist/data.json`, json, 'utf8', (err) => {
         if (err) {
             console.error(err);
             return;
         }
-
-        const modifiedData = 'data';
-
-        fs.writeFile(`${__dirname}/../../dist/teste.csv`, modifiedData, 'utf8', (err) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            console.log('O arquivo CSV foi atualizado com sucesso!');
-        });
+        console.log('O arquivo foi atualizado com sucesso!');
     });
 }
 
@@ -27,6 +21,7 @@ exports.sendNum = () => {
     if (!usedNums.includes(newNum) && newNum) {
         usedNums.push(newNum);
         var numList = this.updateNumList();
+        this.pushData();
         numList.innerHTML = `
                 <div class="row num-item" id="i${newNum}">
                     <div class="col">
@@ -49,6 +44,7 @@ exports.updateNumList = () => {
 exports.deleteNum = (valueId) => {
     usedNums.splice(usedNums.indexOf(Number(valueId)));
     document.querySelector(`#${valueId}`).remove();
+    this.pushData();
 }
 
 exports.editNum = (valueId) => {
@@ -81,6 +77,7 @@ exports.saveEdit = (oldValue) => {
         usedNums[usedNums.indexOf(Number(oldValue))] = Number(newNumValue);
         const newElement = document.querySelector(`#i${oldValue}`);
         newElement.innerHTML = saveHTMLEditItem.replaceAll(oldValue, newNumValue);
+        this.pushData();
     } else {
         console.log('Numero já existente!');
     }
