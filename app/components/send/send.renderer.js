@@ -1,36 +1,57 @@
+const fs = require('fs');
+
+exports.teste = () => {
+    fs.writeFile(`${__dirname}/../../dist/teste.csv`, 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        const modifiedData = 'data';
+
+        fs.writeFile(`${__dirname}/../../dist/teste.csv`, modifiedData, 'utf8', (err) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log('O arquivo CSV foi atualizado com sucesso!');
+        });
+    });
+}
+
 var saveHTMLEditItem = null;
 const usedNums = []
 
-const sendNum = () => {
+exports.sendNum = () => {
     var newNum = Number(document.querySelector('.send input').value);
     if (!usedNums.includes(newNum) && newNum) {
         usedNums.push(newNum);
-        var numList = updateNumList();
+        var numList = this.updateNumList();
         numList.innerHTML = `
                 <div class="row num-item" id="i${newNum}">
                     <div class="col">
                         <span>${newNum}</span>
                     </div>
                     <div class="col">
-                        <button class="btn btn-secondary" onclick="editNum('i${newNum}')">Editar</button>
-                        <button class="btn btn-danger" onclick="deleteNum('i${newNum}')">Apagar</button>
+                        <button class="btn btn-secondary" onclick="renderer.editNum('i${newNum}')">Editar</button>
+                        <button class="btn btn-danger" onclick="renderer.deleteNum('i${newNum}')">Apagar</button>
                     </div>
                 </div>` + numList.innerHTML;
     } else {
-        alert('Numero já adicionado ou valor inválido');
+        console.log('Numero já adicionado ou valor inválido');
     }
 }
 
-const updateNumList = () => {
+exports.updateNumList = () => {
     return document.querySelector('.nums');
 }
 
-const deleteNum = (valueId) => {
+exports.deleteNum = (valueId) => {
     usedNums.splice(usedNums.indexOf(Number(valueId)));
     document.querySelector(`#${valueId}`).remove();
 }
 
-const editNum = (valueId) => {
+exports.editNum = (valueId) => {
     const currentEditItem = document.querySelector(`#${valueId}`);
     saveHTMLEditItem = currentEditItem.innerHTML;
     const numValue = currentEditItem.querySelector('span').innerText;
@@ -42,24 +63,25 @@ const editNum = (valueId) => {
             </div>
         </div>
         <div class="col">
-            <button class="btn btn-secondary" onclick="saveEdit('${numValue}')">Salvar</button>
-            <button class="btn btn-danger" onclick="cancelEdit('i${numValue}')">Cancelar</button>
+            <button class="btn btn-secondary" onclick="renderer.saveEdit('${numValue}')">Salvar</button>
+            <button class="btn btn-danger" onclick="renderer.cancelEdit('i${numValue}')">Cancelar</button>
         </div>
     `;
 }
 
-const cancelEdit = (valueId) => {
+exports.cancelEdit = (valueId) => {
     document.querySelector(`#${valueId}`).innerHTML = saveHTMLEditItem;
 }
 
-const saveEdit = (oldValue) => {
+
+// (TODO): quando o numero é editado, não é possível apagalo posteriormente
+exports.saveEdit = (oldValue) => {
     const newNumValue = document.querySelector('#edit').value;
     if (!usedNums.includes(Number(newNumValue))) {
         usedNums[usedNums.indexOf(Number(oldValue))] = Number(newNumValue);
         const newElement = document.querySelector(`#i${oldValue}`);
         newElement.innerHTML = saveHTMLEditItem.replaceAll(oldValue, newNumValue);
     } else {
-        alert('Numero já existente!');
+        console.log('Numero já existente!');
     }
-
 }
